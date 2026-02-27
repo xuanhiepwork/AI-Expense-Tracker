@@ -1,7 +1,7 @@
 // === SECTION 1: IMPORTS ===
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { LucideChevronLeft, LucideChevronDown, LucideAlertTriangle, LucideLightbulb } from 'lucide-react-native';
+import { LucideChevronLeft, LucideChevronDown, LucideAlertTriangle, LucideLightbulb, LucideTrendingUp } from 'lucide-react-native';
 import { styles } from './css/ReportScreenStyles';
 import { COLORS } from '../theme/colors';
 import { getTransactions } from '../services/transactionStorage';
@@ -20,6 +20,18 @@ const ReportScreen = () => {
     const [stats, setStats] = useState({ spent: 0, remaining: GLOBAL_BUDGET, percentage: 0 });
     const [catStats, setCatStats] = useState([]);
     const [alerts, setAlerts] = useState([]);
+
+    {/* START LOGIC CHO BIỂU ĐỒ XU HƯỚNG */ }
+    const [activeTrendTab, setActiveTrendTab] = useState('Xu hướng chi tiêu');
+    const trendData = [
+        { month: 'T9', spent: 2.8, budget: 3.5 },
+        { month: 'T10', spent: 3.1, budget: 3.5 },
+        { month: 'T11', spent: 2.7, budget: 3.5 },
+        { month: 'T12', spent: 4.0, budget: 3.5 },
+        { month: 'T1', spent: 3.0, budget: 3.5 },
+        { month: 'T2', spent: 2.2, budget: 3.5 },
+    ];
+    {/* END LOGIC CHO BIỂU ĐỒ XU HƯỚNG */ }
 
     useEffect(() => {
         const analyzeData = async () => {
@@ -136,6 +148,65 @@ const ReportScreen = () => {
                     ))}
                 </View>
                 {/* END TÌNH TRẠNG NGÂN SÁCH */}
+
+                {/* START PHẦN AI INSIGHTS & BIỂU ĐỒ XU HƯỚNG */}
+                <View style={styles.insightsCard}>
+                    <View style={styles.insightHeader}>
+                        <View style={styles.insightTitleRow}>
+                            <View style={styles.insightIconBox}><LucideTrendingUp size={18} color="#8B5CF6" /></View>
+                            <View>
+                                <Text style={styles.insightTitle}>AI Insights & Reports</Text>
+                                <Text style={styles.insightSub}>Nhấn để thu gọn</Text>
+                            </View>
+                        </View>
+                        <TouchableOpacity style={styles.collapseBtn}><LucideChevronDown size={20} color="#9CA3AF" /></TouchableOpacity>
+                    </View>
+
+                    <View style={styles.trendTabContainer}>
+                        <TouchableOpacity
+                            style={[styles.trendTab, activeTrendTab === 'Xu hướng chi tiêu' && styles.trendTabActive]}
+                            onPress={() => setActiveTrendTab('Xu hướng chi tiêu')}
+                        >
+                            <Text style={[styles.trendTabText, activeTrendTab === 'Xu hướng chi tiêu' && styles.trendTabTextActive]}>Xu hướng chi tiêu</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.trendTab, activeTrendTab === 'Phân loại tháng' && styles.trendTabActive]}
+                            onPress={() => setActiveTrendTab('Phân loại tháng')}
+                        >
+                            <Text style={[styles.trendTabText, activeTrendTab === 'Phân loại tháng' && styles.trendTabTextActive]}>Phân loại tháng</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <Text style={styles.chartUnit}>triệu đồng / tháng</Text>
+
+                    {/* Biểu đồ xu hướng (Sử dụng UI giả lập theo ảnh mẫu) */}
+                    <View style={styles.chartPlaceholder}>
+                        <View style={styles.yAxis}>
+                            <Text style={styles.axisLabel}>4.5M</Text>
+                            <Text style={styles.axisLabel}>2M</Text>
+                            <Text style={styles.axisLabel}>0M</Text>
+                        </View>
+                        <View style={styles.chartArea}>
+                            {/* Đây là nơi sẽ vẽ Line Chart bằng thư viện react-native-chart-kit sau này */}
+                            <View style={styles.mockChartLine} />
+                            <View style={styles.xAxis}>
+                                {trendData.map((d, i) => <Text key={i} style={styles.axisLabel}>{d.month}</Text>)}
+                            </View>
+                        </View>
+                    </View>
+
+                    <View style={styles.legendContainer}>
+                        <View style={styles.legendItem}>
+                            <View style={[styles.legendLine, { backgroundColor: '#4F46E5' }]} />
+                            <Text style={styles.legendText}>Chi tiêu thực tế</Text>
+                        </View>
+                        <View style={styles.legendItem}>
+                            <View style={[styles.legendLine, { backgroundColor: '#E5E7EB', borderStyle: 'dashed', borderWidth: 1 }]} />
+                            <Text style={styles.legendText}>Ngân sách</Text>
+                        </View>
+                    </View>
+                </View>
+                {/* END PHẦN AI INSIGHTS & BIỂU ĐỒ XU HƯỚNG */}
 
                 {/* START GỢI Ý TỪ AI (FIX CỨNG ĐỂ TEST) */}
                 {/* 3. Cảnh báo từ AI */}
