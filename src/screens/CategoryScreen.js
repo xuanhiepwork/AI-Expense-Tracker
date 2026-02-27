@@ -1,30 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import { LucideArrowLeft, LucidePlus, LucideSearch, LucideMoreVertical, LucideUtensils, LucideCar, LucideSparkles, LucideHand } from 'lucide-react-native';
+import { LucideArrowLeft, LucidePlus, LucideSearch, LucideMoreVertical, LucideSparkles, LucideHand } from 'lucide-react-native';
 import CreateCategoryModal from '../components/CreateCategoryModal';
 import { styles } from './css/CategoryScreenStyles';
 import DeleteCategoryModal from '../components/DeleteCategoryModal';
+import { getCategories, saveCategories } from '../services/categoryStorage';
 
-const MOCK_CATEGORIES = [
-    { id: 1, name: 'Ăn uống', count: 24, type: 'Auto', icon: LucideUtensils, color: '#F97316', bg: '#FFF7ED' },
-    { id: 2, name: 'Di chuyển', count: 18, type: 'Auto', icon: LucideCar, color: '#10B981', bg: '#F0FDF4' },
-    { id: 3, name: 'uống thuốc', count: 5, type: 'Manual', icon: LucideHand, color: '#8B5CF6', bg: '#F5F3FF' }
-];
+// Hàm map iconId dạng string thành Component (vì AsyncStorage không lưu được Component)
+import { LucideUtensils, LucideCar, LucideBook, LucideShoppingBag, LucideMusic, LucideHeart, LucideCoffee, LucideHome, LucideWifi, LucideDumbbell, LucidePlane, LucideBriefcase, LucideCamera, LucideFilm, LucideBus, LucidePill } from 'lucide-react-native';
+const ICON_MAP = {
+    utensils: LucideUtensils, car: LucideCar, book: LucideBook, bag: LucideShoppingBag, music: LucideMusic, heart: LucideHeart, coffee: LucideCoffee, home: LucideHome, wifi: LucideWifi, dumbbell: LucideDumbbell, plane: LucidePlane, briefcase: LucideBriefcase, camera: LucideCamera, film: LucideFilm, bus: LucideBus, pill: LucidePill, hand: LucideHand
+};
 
 const CategoryScreen = () => {
     const [activeTab, setActiveTab] = useState('Tất cả');
     const [showCreateModal, setShowCreateModal] = useState(false);
-
-    // State cho Modal Xóa
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [categoryToDelete, setCategoryToDelete] = useState(null);
 
-    // Hàm xử lý xóa
-    const handleDeleteConfirm = () => {
-        console.log(`Đã xóa hạng mục: ${categoryToDelete?.name}`);
-        setShowDeleteModal(false);
-        // Sau này tích hợp API ở đây
+    // 1. State lưu danh sách hạng mục
+    const [categories, setCategories] = useState([]);
+
+    // 2. Load dữ liệu khi vào màn hình
+    useEffect(() => {
+        const loadData = async () => {
+            const data = await getCategories();
+            setCategories(data);
+        };
+        loadData();
+    }, []);
+
+    // 3. Xử lý Tạo mới
+    const handleCreateCategory = async (newCategoryData) => {
+        const newCat = {
+            id: Date.now().toString(), // Tạo ID ngẫu nhiên
+            name: newCategoryData.name,
+            count: 0,
+            type: newCategoryData.type,
+            iconId: newCategoryData.icon,
+            color: newCategoryData.color,
+            bg: newCategoryData.color + '15', // Tạo màu nền nhạt
+        };
+
+        const updatedList = [newCat, ...categories];
+        setCategories(updatedList); // Cập nhật UI
+        await saveCategories(updatedList); // Lưu vào máy
+        setShowCreateModal(false);
     };
+
+    // 4. Xử lý Xóa
+    const handleDeleteConfirm = async () => {
+        const updatedList = categories.filter(c => c.id !== categoryToDelete.id);
+        setCategories(updatedList); // Cập nhật UI
+        await saveCategories(updatedList); // Lưu vào máy
+        setShowDeleteModal(false);
+    };
+    // Sau này tích hợp API ở đây
 
     return (
         <View style={styles.container}>
@@ -71,49 +102,42 @@ const CategoryScreen = () => {
             {/* Danh sách lưới (Grid) */}
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.listHeader}>
-                    <Text style={styles.listTitle}>TẤT CẢ ({MOCK_CATEGORIES.length})</Text>
+                    <Text style={styles.listTitle}>TẤT CẢ ({categories.length})</Text>
                 </View>
-
                 <View style={styles.grid}>
-                    {MOCK_CATEGORIES.map(cat => (
-                        <View key={cat.id} style={styles.card}>
-                            {/* Nút 3 chấm để gọi Modal Xoá */}
-                            <TouchableOpacity
-                                style={styles.moreBtn}
-                                onPress={() => {
-                                    setCategoryToDelete(cat);
-                                    setShowDeleteModal(true);
-                                }}
-                            >
-                                <LucideMoreVertical size={20} color="#9CA3AF" />
-                            </TouchableOpacity>
+                    {/* Render từ State categories */}
+                    {categories.map(cat => {
+                        const IconComponent = ICON_MAP[cat.iconId] || LucidePill; // Map String sang Icon
+                        return (
+                            <View key={cat.id} style={styles.card}>
+                                <TouchableOpacity style={styles.moreBtn} onPress={() => { setCategoryToDelete(cat); setShowDeleteModal(true); }}>
+                                    <LucideMoreVertical size={20} color="#9CA3AF" />
+                                </TouchableOpacity>
 
-                            <View style={[styles.iconBox, { backgroundColor: cat.bg }]}>
-                                <cat.icon size={30} color={cat.color} />
+                                <View style={[styles.iconBox, { backgroundColor: cat.bg }]}>
+                                    <IconComponent size={30} color={cat.color} />
+                                </View>
+                                <Text style={styles.catName}>{cat.name}</Text>
+                                <Text style={styles.txCount}>{cat.count} giao dịch</Text>
+
+                                {cat.type === 'Auto' ? (
+                                    <View style={styles.badgeAuto}><LucideSparkles size={12} color="#4F46E5" /><Text style={styles.badgeTextAuto}>Auto</Text></View>
+                                ) : (
+                                    <View style={styles.badgeManual}><LucideHand size={12} color="#6B7280" /><Text style={styles.badgeTextManual}>Manual</Text></View>
+                                )}
                             </View>
-                            <Text style={styles.catName}>{cat.name}</Text>
-                            <Text style={styles.txCount}>{cat.count} giao dịch</Text>
-
-                            {cat.type === 'Auto' ? (
-                                <View style={styles.badgeAuto}>
-                                    <LucideSparkles size={12} color="#4F46E5" />
-                                    <Text style={styles.badgeTextAuto}>Auto</Text>
-                                </View>
-                            ) : (
-                                <View style={styles.badgeManual}>
-                                    <LucideHand size={12} color="#6B7280" />
-                                    <Text style={styles.badgeTextManual}>Manual</Text>
-                                </View>
-                            )}
-                        </View>
-                    ))}
+                        );
+                    })}
                 </View>
-                {/* Khoảng trống để không bị vướng Bottom Tab */}
                 <View style={{ height: 100 }} />
             </ScrollView>
 
-            {/* Các Modals */}
-            <CreateCategoryModal visible={showCreateModal} onClose={() => setShowCreateModal(false)} />
+            {/* Truyền hàm xử lý Tạo mới vào Modal */}
+            <CreateCategoryModal
+                visible={showCreateModal}
+                onClose={() => setShowCreateModal(false)}
+                onCreate={handleCreateCategory}
+            />
 
             <DeleteCategoryModal
                 visible={showDeleteModal}

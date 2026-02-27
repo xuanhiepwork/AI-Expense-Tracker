@@ -105,10 +105,9 @@ const HomeScreen = () => {
                     </View>
                 </Modal>
             </ScrollView>
+            <CreateCategoryModal visible={showCategoryModal} onClose={() => setShowCategoryModal(false)} />
         </View>
     );
 };
-
-<CreateCategoryModal visible={showCategoryModal} onClose={() => setShowCategoryModal(false)} />
 
 export default HomeScreen;

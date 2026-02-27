@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LucideUtensils, LucideCar, LucideShoppingBag, LucideBook } from 'lucide-react-native';
+import { styles } from './css/TransactionItemStyles';
 
 const TransactionItem = ({ title, amount, date, category }) => {
     // Logic chọn icon dựa trên hạng mục
@@ -25,14 +26,5 @@ const TransactionItem = ({ title, amount, date, category }) => {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', padding: 16, borderRadius: 20, marginBottom: 12 },
-    iconWrapper: { width: 44, height: 44, borderRadius: 12, backgroundColor: '#F9FAFB', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
-    info: { flex: 1 },
-    title: { fontSize: 16, fontWeight: '600', color: '#1F2937' },
-    date: { fontSize: 12, color: '#9CA3AF', marginTop: 2 },
-    amount: { fontSize: 16, fontWeight: 'bold', color: '#EF4444' }
-});
 
 export default TransactionItem;

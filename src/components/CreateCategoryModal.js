@@ -5,6 +5,7 @@ import {
     LucideMusic, LucideHeart, LucideCoffee, LucideHome, LucideWifi, LucideDumbbell,
     LucidePlane, LucideBriefcase, LucideCamera, LucideFilm, LucideBus, LucideCheck, LucideSparkles
 } from 'lucide-react-native';
+import { styles } from './css/CreateCategoryModalStyles';
 
 // Danh sách màu và icon theo thiết kế
 const COLORS = ['#F97316', '#22C55E', '#8B5CF6', '#3B82F6', '#EC4899', '#EF4444', '#EAB308', '#0EA5E9', '#6366F1', '#14B8A6', '#64748B', '#F43F5E'];
@@ -126,7 +127,20 @@ const CreateCategoryModal = ({ visible, onClose }) => {
                         </View>
 
                         {/* Nút Tạo */}
-                        <TouchableOpacity style={styles.createBtn} onPress={onClose}>
+                        <TouchableOpacity
+                            style={styles.createBtn}
+                            onPress={() => {
+                                // Gọi hàm onCreate được truyền từ CategoryScreen
+                                if (onCreate) {
+                                    onCreate({
+                                        name: name,
+                                        icon: selectedIcon,
+                                        color: selectedColor,
+                                        type: type
+                                    });
+                                }
+                            }}
+                        >
                             <Text style={styles.createBtnText}>+ Tạo hạng mục</Text>
                         </TouchableOpacity>
                         <View style={{ height: 40 }} />
@@ -136,41 +150,5 @@ const CreateCategoryModal = ({ visible, onClose }) => {
         </Modal>
     );
 };
-
-const styles = StyleSheet.create({
-    overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-    content: { backgroundColor: '#fff', borderTopLeftRadius: 32, borderTopRightRadius: 32, paddingHorizontal: 24, paddingTop: 16, height: '90%' },
-    handle: { width: 40, height: 4, backgroundColor: '#E5E7EB', borderRadius: 2, alignSelf: 'center', marginBottom: 20 },
-    headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
-    title: { fontSize: 20, fontWeight: 'bold', color: '#111827' },
-    subtitle: { color: '#6B7280', marginTop: 4, fontSize: 13 },
-    closeBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#F3F4F6', justifyContent: 'center', alignItems: 'center' },
-
-    previewCard: { flexDirection: 'row', alignItems: 'center', padding: 16, borderRadius: 20, borderWidth: 1, marginBottom: 24 },
-    previewIconBox: { width: 48, height: 48, borderRadius: 16, justifyContent: 'center', alignItems: 'center', marginRight: 16 },
-    previewName: { fontSize: 18, fontWeight: 'bold', color: '#111827', marginBottom: 4 },
-    typeBadge: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-    typeBadgeText: { fontSize: 12, color: '#4F46E5', fontWeight: '500' },
-
-    sectionLabel: { fontSize: 12, fontWeight: 'bold', color: '#6B7280', marginBottom: 12, marginTop: 10, letterSpacing: 0.5 },
-    input: { backgroundColor: '#F9FAFB', borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 16, padding: 16, fontSize: 16, color: '#111827', marginBottom: 24 },
-
-    iconGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginBottom: 24 },
-    iconBox: { width: 50, height: 50, borderRadius: 16, backgroundColor: '#F9FAFB', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'transparent' },
-
-    colorGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginBottom: 24 },
-    colorOuter: { width: 40, height: 40, borderRadius: 20, borderWidth: 2, borderColor: 'transparent', justifyContent: 'center', alignItems: 'center' },
-    colorInner: { width: 30, height: 30, borderRadius: 15 },
-
-    typeRow: { flexDirection: 'row', gap: 12, marginBottom: 32 },
-    typeCard: { flex: 1, borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 16, padding: 16, backgroundColor: '#fff' },
-    typeCardActive: { borderColor: '#4F46E5', backgroundColor: '#EEF2FF' },
-    typeCardHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
-    typeTitle: { fontWeight: 'bold', color: '#111827', fontSize: 15 },
-    typeDesc: { fontSize: 12, color: '#6B7280', lineHeight: 18 },
-
-    createBtn: { backgroundColor: '#4F46E5', padding: 16, borderRadius: 16, alignItems: 'center' },
-    createBtnText: { color: '#fff', fontSize: 16, fontWeight: 'bold' }
-});
 
 export default CreateCategoryModal;

@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { LucideLayoutDashboard, LucideHistory, LucidePieChart } from 'lucide-react-native';
+import { LucideLayoutDashboard, LucideHistory, LucidePieChart, LucideTags } from 'lucide-react-native';
 
-// Import các màn hình bạn đã làm
+// 1. Import ĐẦY ĐỦ 4 màn hình của bạn
 import HomeScreen from './src/screens/HomeScreen';
 import HistoryScreen from './src/screens/HistoryScreen';
+import ReportScreen from './src/screens/ReportScreen';
+import CategoryScreen from './src/screens/CategoryScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,10 +32,17 @@ export default function App() {
           component={HistoryScreen}
           options={{ tabBarIcon: ({ color }) => <LucideHistory color={color} size={24} /> }}
         />
+        {/* 2. Sửa lại component thành ReportScreen thật */}
         <Tab.Screen
           name="Reports"
-          component={HistoryScreen} // Tạm thời dùng History, chúng ta sẽ code màn này ở bước 3
+          component={ReportScreen}
           options={{ tabBarIcon: ({ color }) => <LucidePieChart color={color} size={24} /> }}
+        />
+        {/* 3. Thêm tab Hạng mục (Category) vào App */}
+        <Tab.Screen
+          name="Category"
+          component={CategoryScreen}
+          options={{ tabBarIcon: ({ color }) => <LucideTags color={color} size={24} /> }}
         />
       </Tab.Navigator>
     </NavigationContainer>

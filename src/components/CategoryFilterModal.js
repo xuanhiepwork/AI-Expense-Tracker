@@ -1,3 +1,5 @@
+import { styles } from './css/CategoryFilterModalStyles';
+
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { LucideCheck, LucideBook, LucideUtensils, LucideCar, LucideShoppingBag, LucideMusic, LucideHeart, LucideCoffee, LucideHome, LucideWifi, LucideDumbbell } from 'lucide-react-native';
