@@ -1,10 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Animated, Easing, Modal } from 'react-native';
 import { LucideMic, LucideWallet, LucideTrendingUp } from 'lucide-react-native';
+import { Audio } from 'expo-av';
+import TransactionItem from '../components/TransactionItem';
 
 const HomeScreen = () => {
-    // 1. Khai báo State và Animation bên TRONG component
+    // 1. Khai báo State và Animation (Bắt buộc ở ĐÂY)
     const [isModalVisible, setModalVisible] = useState(false);
+    const [recording, setRecording] = useState(null);
+    const [isRecording, setIsRecording] = useState(false);
     const [parsedData, setParsedData] = useState({
         amount: "45,000đ",
         category: "Ăn uống",
@@ -33,82 +37,80 @@ const HomeScreen = () => {
         ).start();
     }, [pulseAnim]);
 
+    // 2. Logic ghi âm
+    async function startRecording() {
+        try {
+            const permission = await Audio.requestPermissionsAsync();
+            if (permission.status === 'granted') {
+                await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });
+                const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
+                setRecording(recording);
+                setIsRecording(true);
+            }
+        } catch (err) { console.error('Lỗi khởi động ghi âm:', err); }
+    }
+
+    async function stopRecording() {
+        if (!recording) return;
+        setIsRecording(false);
+        await recording.stopAndUnloadAsync();
+        const uri = recording.getURI();
+        console.log('File ghi âm tại:', uri);
+        setRecording(null);
+        setModalVisible(true); // Hiện modal xác nhận sau khi thả tay
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Header */}
+                {/* Header & Budget Card giữ nguyên như thiết kế */}
                 <View style={styles.header}>
                     <Text style={styles.welcomeText}>Chào Hiệp 👋</Text>
                     <View style={styles.balanceCard}>
-                        <Text style={styles.balanceTitle}>Còn lại trong tháng</Text>
                         <Text style={styles.balanceAmount}>5,200,000đ</Text>
-                        <View style={styles.statsRow}>
-                            <View style={styles.statItem}>
-                                <LucideWallet color="#10B981" size={16} />
-                                <Text style={styles.statText}> Hạn mức: 10M</Text>
-                            </View>
-                            <View style={styles.statItem}>
-                                <LucideTrendingUp color="#EF4444" size={16} />
-                                <Text style={styles.statText}> Đã tiêu: 4.8M</Text>
-                            </View>
-                        </View>
                     </View>
                 </View>
 
-                {/* Budget Status Card */}
-                <View style={styles.budgetCard}>
-                    <View style={styles.budgetHeader}>
-                        <Text style={styles.budgetTitle}>Budget Status</Text>
-                        <Text style={styles.budgetPercent}>61% used</Text>
+                {/* Phần hiển thị Giao dịch */}
+                <ScrollView style={styles.historyContainer}>
+                    <View style={styles.historyHeader}>
+                        <Text style={styles.sectionTitle}>Giao dịch gần đây</Text>
+                        <TouchableOpacity><Text style={{ color: '#4F46E5' }}>Xem tất cả</Text></TouchableOpacity>
                     </View>
-                    <View style={styles.progressContainer}>
-                        <View style={styles.progressBarBg}>
-                            <View style={[styles.progressBarFill, { width: '61%', backgroundColor: '#EF4444' }]} />
-                        </View>
-                    </View>
-                    <View style={styles.availableRow}>
-                        <Text style={styles.availableLabel}>Available</Text>
-                        <Text style={styles.availableAmount}>$1,360.00</Text>
-                    </View>
-                </View>
 
-                {/* Giao dịch gần đây */}
-                <View style={styles.historyContainer}>
-                    <Text style={styles.sectionTitle}>Giao dịch gần đây</Text>
-                    <View style={styles.transactionCard}>
-                        <Text style={styles.txTitle}>Ăn sáng phở bò</Text>
-                        <Text style={styles.txAmount}>-45,000đ</Text>
-                    </View>
-                </View>
+                    <TransactionItem title="Phở bò sáng" amount="45.000" date="26/02/2026" category="Ăn uống" />
+                    <TransactionItem title="Grab về nhà" amount="32.000" date="25/02/2026" category="Di chuyển" />
+                    <TransactionItem title="Khóa học Udemy" amount="150.000" date="26/02/2026" category="Học tập" />
+                </ScrollView>
 
                 {/* Mic Button Area (Task AET-18) */}
                 <View style={styles.micWrapper}>
-                    <Animated.View style={[styles.micRing, { transform: [{ scale: pulseAnim }] }]} />
+                    <Animated.View style={[
+                        styles.micRing,
+                        { transform: [{ scale: pulseAnim }], opacity: isRecording ? 0.8 : 0.4 }
+                    ]} />
                     <TouchableOpacity
-                        style={styles.micButton}
-                        onPress={() => setModalVisible(true)}
+                        style={[styles.micButton, isRecording && { backgroundColor: '#EF4444' }]}
+                        onPressIn={startRecording}
+                        onPressOut={stopRecording}
                     >
                         <LucideMic color="#fff" size={32} />
                     </TouchableOpacity>
-                    <Text style={styles.micHint}>Hold to Speak</Text>
-                    <Text style={styles.micSubHint}>Say "Add deposit $42 for groceries"</Text>
+                    <Text style={styles.micHint}>{isRecording ? "Đang nghe..." : "Nhấn giữ để nói"}</Text>
                 </View>
 
-                {/* Modal Xác nhận (Task AET-22) */}
-                <Modal transparent={true} visible={isModalVisible} animationType="slide">
+                {/* Modal Xác nhận */}
+                <Modal transparent visible={isModalVisible} animationType="slide">
                     <View style={styles.modalOverlay}>
                         <View style={styles.modalContent}>
                             <View style={styles.modalHandle} />
                             <Text style={styles.modalTitle}>Xác nhận thông tin</Text>
                             <View style={styles.inputField}>
-                                <Text style={styles.fieldLabel}>Số tiền</Text>
-                                <Text style={styles.fieldValue}>{parsedData.amount}</Text>
+                                <Text style={styles.fieldValue}>{parsedData.amount} - {parsedData.category}</Text>
                             </View>
-                            <View style={styles.actionRow}>
-                                <TouchableOpacity style={styles.btnSave} onPress={() => setModalVisible(false)}>
-                                    <Text style={styles.btnTextSave}>Lưu</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity style={styles.btnSave} onPress={() => setModalVisible(false)}>
+                                <Text style={styles.btnTextSave}>Lưu</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </Modal>
@@ -133,17 +135,7 @@ const styles = StyleSheet.create({
     txTitle: { fontWeight: '500' },
     txAmount: { color: '#EF4444', fontWeight: 'bold' },
 
-    budgetCard: {
-        backgroundColor: '#fff',
-        margin: 20,
-        padding: 20,
-        borderRadius: 24,
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.1,
-        shadowRadius: 20,
-    },
+    budgetCard: { backgroundColor: '#fff', margin: 20, padding: 20, borderRadius: 24, elevation: 5, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.1, shadowRadius: 20, },
     budgetHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15 },
     budgetTitle: { fontSize: 16, fontWeight: 'bold', color: '#1F2937' },
     budgetPercent: { color: '#6B7280' },
