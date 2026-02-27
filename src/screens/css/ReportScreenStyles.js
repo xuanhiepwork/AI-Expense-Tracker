@@ -1,6 +1,8 @@
+// === SECTION 1: IMPORTS ===
 import { StyleSheet } from 'react-native';
 import { COLORS } from '../../theme/colors';
 
+// === SECTION 2: STYLE DEFINITIONS ===
 export const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: COLORS.background },
     blueHeader: { backgroundColor: COLORS.primary, padding: 20, paddingTop: 50, flexDirection: 'row', alignItems: 'center', borderBottomLeftRadius: 32, borderBottomRightRadius: 32, paddingBottom: 40 },
@@ -13,7 +15,7 @@ export const styles = StyleSheet.create({
 
     content: { padding: 16 },
 
-    summaryRow: { flexDirection: 'row', gap: 10, marginBottom: 20, marginTop: -30 },
+    summaryRow: { flexDirection: 'row', gap: 10, marginBottom: 20, marginTop: -8 },
     summaryCard: { flex: 1, padding: 12, borderRadius: 20, elevation: 4 },
     sumLabel: { color: '#fff', fontSize: 10, opacity: 0.8 },
     sumValue: { color: '#fff', fontSize: 16, fontWeight: 'bold', marginTop: 4 },

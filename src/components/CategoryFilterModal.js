@@ -1,9 +1,11 @@
+// === SECTION 1: IMPORTS ===
 import { styles } from './css/CategoryFilterModalStyles';
 
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { LucideCheck, LucideBook, LucideUtensils, LucideCar, LucideShoppingBag, LucideMusic, LucideHeart, LucideCoffee, LucideHome, LucideWifi, LucideDumbbell } from 'lucide-react-native';
 
+// === SECTION 2: CONFIG & UI CONSTANTS ===
 const CATEGORIES = [
     { id: 1, name: 'Học tập', icon: LucideBook, color: '#EEF2FF', iconColor: '#6366F1' },
     { id: 2, name: 'Ăn uống', icon: LucideUtensils, color: '#FFF7ED', iconColor: '#F97316' },
@@ -17,6 +19,7 @@ const CATEGORIES = [
     { id: 10, name: 'Thể thao', icon: LucideDumbbell, color: '#F0FDF4', iconColor: '#22C55E' },
 ];
 
+// === SECTION 3: MODAL LOGIC ===
 const CategoryFilterModal = ({ visible, onClose }) => {
     const [selectedIds, setSelectedIds] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); // Mặc định chọn tất cả
 
@@ -24,6 +27,7 @@ const CategoryFilterModal = ({ visible, onClose }) => {
         setSelectedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
     };
 
+    // === SECTION 4: MODAL RENDER ===
     return (
         <Modal transparent visible={visible} animationType="slide">
             <View style={styles.overlay}>

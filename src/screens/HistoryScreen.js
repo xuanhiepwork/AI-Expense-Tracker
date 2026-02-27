@@ -1,9 +1,11 @@
+// === SECTION 1: IMPORTS ===
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { LucideSearch, LucideCalendar, LucideArrowUpDown, LucideFilter, LucideArrowLeft } from 'lucide-react-native';
 import TransactionItem from '../components/TransactionItem';
 import { styles } from './css/HistoryScreenStyles';
 
+// === SECTION 2: CONSTANTS & MOCK DATA ===
 // 1. Dữ liệu giả lập (Mock Data) - Chuẩn bị cho API Backend
 const MOCK_TRANSACTIONS = [
     { id: '1', title: 'Học tập', amount: '150.000', date: '26/02/2026', category: 'Học tập' },
@@ -13,6 +15,7 @@ const MOCK_TRANSACTIONS = [
     { id: '5', title: 'Highlands - cappuccino', amount: '65.000', date: '23/02/2026', category: 'Cà phê' },
 ];
 
+// === SECTION 3: COMPONENT LOGIC ===
 const HistoryScreen = () => {
     // 2. State lưu trữ từ khóa tìm kiếm
     const [searchText, setSearchText] = useState('');
@@ -23,6 +26,7 @@ const HistoryScreen = () => {
         tx.category.toLowerCase().includes(searchText.toLowerCase())
     );
 
+    // === SECTION 4: MAIN RENDER ===
     return (
         <View style={styles.container}>
             {/* Blue Header & Filter Chips giữ nguyên như cũ... */}

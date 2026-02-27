@@ -1,6 +1,8 @@
+// === SECTION 1: IMPORTS ===
 import { StyleSheet } from 'react-native';
 import { COLORS } from '../../theme/colors';
 
+// === SECTION 2: STYLE DEFINITIONS ===
 export const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: COLORS.background },
     header: { padding: 20, backgroundColor: COLORS.primary, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, paddingTop: 60 },

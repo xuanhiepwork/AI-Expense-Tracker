@@ -1,8 +1,13 @@
+// === SECTION 1: IMPORTS ===
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LucideUtensils, LucideCar, LucideShoppingBag, LucideBook } from 'lucide-react-native';
 import { styles } from './css/TransactionItemStyles';
 
+// === SECTION 2: CONFIG & UI CONSTANTS ===
+
+
+// === SECTION 3: MODAL LOGIC ===
 const TransactionItem = ({ title, amount, date, category }) => {
     // Logic chọn icon dựa trên hạng mục
     const getIcon = () => {
@@ -15,6 +20,7 @@ const TransactionItem = ({ title, amount, date, category }) => {
         }
     };
 
+    // === SECTION 4: MODAL RENDER ===
     return (
         <View style={styles.container}>
             <View style={styles.iconWrapper}>{getIcon()}</View>

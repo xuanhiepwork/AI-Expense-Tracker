@@ -2,6 +2,12 @@
 ```
 npx expo start
 ```
+```
+npm start
+```
+```
+npx run [tên script trong thư mục package]
+```
 
 src/components/: Các UI component dùng chung (Button, Card, Modal).
 

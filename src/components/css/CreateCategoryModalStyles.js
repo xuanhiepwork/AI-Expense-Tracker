@@ -1,6 +1,8 @@
+// === SECTION 1: IMPORTS ===
 import { StyleSheet } from 'react-native';
 import { COLORS } from '../../theme/colors';
 
+// === SECTION 2: STYLE DEFINITIONS ===
 export const styles = StyleSheet.create({
     overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
     content: { backgroundColor: COLORS.cardBg, borderTopLeftRadius: 32, borderTopRightRadius: 32, paddingHorizontal: 24, paddingTop: 16, height: '90%' },

@@ -1,6 +1,8 @@
+// === SECTION 1: IMPORTS ===
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LucideUtensils, LucideCar, LucideHand } from 'lucide-react-native';
 
+// === SECTION 2: CONFIG ===
 const CATEGORY_KEY = '@categories';
 
 // Dữ liệu mặc định khi người dùng mới tải app lần đầu
@@ -10,6 +12,7 @@ const DEFAULT_CATEGORIES = [
     { id: '3', name: 'uống thuốc', count: 5, type: 'Manual', iconId: 'hand', color: '#8B5CF6', bg: '#F5F3FF' }
 ];
 
+// === SECTION 3: STORAGE METHODS ===
 export const getCategories = async () => {
     try {
         const jsonValue = await AsyncStorage.getItem(CATEGORY_KEY);

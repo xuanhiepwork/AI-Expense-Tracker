@@ -1,9 +1,15 @@
+// === SECTION 1: IMPORTS ===
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { LucideTrash2 } from 'lucide-react-native';
 import { styles } from './css/DeleteCategoryModalStyles';
 
+// === SECTION 2: CONFIG & UI CONSTANTS ===
+
+
+// === SECTION 3: MODAL LOGIC ===
 const DeleteCategoryModal = ({ visible, onClose, onConfirm, categoryName }) => {
+    // === SECTION 4: MODAL RENDER ===
     return (
         <Modal transparent visible={visible} animationType="fade">
             <View style={styles.overlay}>

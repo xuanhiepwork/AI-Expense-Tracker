@@ -1,3 +1,4 @@
+// === SECTION 1: IMPORTS ===
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { LucideArrowLeft, LucidePlus, LucideSearch, LucideMoreVertical, LucideSparkles, LucideHand } from 'lucide-react-native';
@@ -8,10 +9,13 @@ import { getCategories, saveCategories } from '../services/categoryStorage';
 
 // Hàm map iconId dạng string thành Component (vì AsyncStorage không lưu được Component)
 import { LucideUtensils, LucideCar, LucideBook, LucideShoppingBag, LucideMusic, LucideHeart, LucideCoffee, LucideHome, LucideWifi, LucideDumbbell, LucidePlane, LucideBriefcase, LucideCamera, LucideFilm, LucideBus, LucidePill } from 'lucide-react-native';
+
+// === SECTION 2: CONSTANTS & MOCK DATA ===
 const ICON_MAP = {
     utensils: LucideUtensils, car: LucideCar, book: LucideBook, bag: LucideShoppingBag, music: LucideMusic, heart: LucideHeart, coffee: LucideCoffee, home: LucideHome, wifi: LucideWifi, dumbbell: LucideDumbbell, plane: LucidePlane, briefcase: LucideBriefcase, camera: LucideCamera, film: LucideFilm, bus: LucideBus, pill: LucidePill, hand: LucideHand
 };
 
+// === SECTION 3: COMPONENT LOGIC ===
 const CategoryScreen = () => {
     const [activeTab, setActiveTab] = useState('Tất cả');
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -57,6 +61,7 @@ const CategoryScreen = () => {
     };
     // Sau này tích hợp API ở đây
 
+    // === SECTION 4: MAIN RENDER ===
     return (
         <View style={styles.container}>
             {/* Header */}

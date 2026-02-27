@@ -1,3 +1,4 @@
+// === SECTION 1: IMPORTS ===
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import {
@@ -7,6 +8,7 @@ import {
 } from 'lucide-react-native';
 import { styles } from './css/CreateCategoryModalStyles';
 
+// === SECTION 2: CONFIG & UI CONSTANTS ===
 // Danh sách màu và icon theo thiết kế
 const COLORS = ['#F97316', '#22C55E', '#8B5CF6', '#3B82F6', '#EC4899', '#EF4444', '#EAB308', '#0EA5E9', '#6366F1', '#14B8A6', '#64748B', '#F43F5E'];
 const ICONS = [
@@ -18,6 +20,7 @@ const ICONS = [
     { id: 'pill', icon: LucidePill }
 ];
 
+// === SECTION 3: MODAL LOGIC ===
 const CreateCategoryModal = ({ visible, onClose }) => {
     // State lưu trữ dữ liệu người dùng nhập
     const [name, setName] = useState('uống thuốc');
@@ -28,6 +31,7 @@ const CreateCategoryModal = ({ visible, onClose }) => {
     // Component icon được chọn hiện tại
     const ActiveIcon = ICONS.find(i => i.id === selectedIcon)?.icon || LucidePill;
 
+    // === SECTION 4: MODAL RENDER ===
     return (
         <Modal transparent visible={visible} animationType="slide">
             <View style={styles.overlay}>
