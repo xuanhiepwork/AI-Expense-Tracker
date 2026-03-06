@@ -18,13 +18,13 @@ export const styles = StyleSheet.create({
     content: { padding: 16 },
 
     // Hàng tóm tắt nằm trong Header
-    summaryRow: { flexDirection: 'row', gap: 10, marginBottom: 20, marginTop: -8, marginBottom: 40 },
+    summaryRow: { flexDirection: 'row', gap: 10, marginTop: -8, marginBottom: 40 },
     summaryCard: { flex: 1, padding: 12, borderRadius: 20, elevation: 4 },
     sumLabel: { color: '#fff', fontSize: 10, opacity: 0.8 },
     sumValue: { color: '#fff', fontSize: 16, fontWeight: 'bold', marginTop: 4 },
 
     // Thẻ trắng đè lên Header (Overlap effect)
-    whiteCard: { backgroundColor: COLORS.cardBg, padding: 20, borderRadius: 24, marginBottom: 20, elevation: 2, marginTop: -25, },
+    whiteCard: { backgroundColor: COLORS.cardBg, padding: 20, borderRadius: 24, marginBottom: 20, elevation: 2, marginTop: -25 },
     cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     cardTitle: { fontSize: 16, fontWeight: 'bold', color: COLORS.textMain },
     badgeText: { fontSize: 12, color: COLORS.primary, backgroundColor: COLORS.primaryLight, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10 },
@@ -47,12 +47,12 @@ export const styles = StyleSheet.create({
     countText: { color: COLORS.danger, fontSize: 12, fontWeight: 'bold' },
 
     alertCard: { padding: 16, borderRadius: 20, borderLeftWidth: 4, borderColor: COLORS.dangerLight, marginBottom: 10, backgroundColor: COLORS.dangerLight },
-    alertText: { fontWeight: 'bold', color: COLORS.danger }, // Dùng màu danger đậm hơn cho chữ
+    alertText: { fontWeight: 'bold', color: COLORS.danger },
     alertSub: { fontSize: 12, color: COLORS.danger, marginTop: 4 },
 
     suggestionCard: { flexDirection: 'row', backgroundColor: COLORS.successLight, padding: 16, borderRadius: 20, alignItems: 'center', gap: 12 },
     suggestIcon: { width: 28, height: 28, borderRadius: 14, backgroundColor: COLORS.success, justifyContent: 'center', alignItems: 'center' },
-    suggestTitle: { fontSize: 14, color: COLORS.success, fontWeight: '500' }, // Dùng màu xanh lá đậm
+    suggestTitle: { fontSize: 14, color: COLORS.success, fontWeight: '500' },
     suggestAmount: { fontSize: 12, color: COLORS.success, marginTop: 2 },
 
     // START SECTION: AI INSIGHTS & TREND CHART
@@ -79,4 +79,20 @@ export const styles = StyleSheet.create({
     legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
     legendLine: { width: 20, height: 3, borderRadius: 2 },
     legendText: { fontSize: 11, color: '#9CA3AF' },
+    chartContainer: { alignItems: 'center', justifyContent: 'center', marginTop: 10, marginLeft: -20 },
+    lineChartStyle: { marginVertical: 8, borderRadius: 16 },
+    tooltipBox: { position: 'absolute', backgroundColor: '#1F2937', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 5 },
+    tooltipText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
+
+    // BIỂU ĐỒ TRÒN DONUT
+    donutContainer: { alignItems: 'center', justifyContent: 'center', position: 'relative' },
+    donutCenterLabel: { position: 'absolute', alignItems: 'center', justifyContent: 'center' },
+    donutCenterText: { fontSize: 12, color: '#9CA3AF' },
+    donutCenterAmount: { fontSize: 18, fontWeight: 'bold', color: '#1F2937' },
+    customLegendContainer: { marginTop: 20, paddingHorizontal: 10 },
+    legendRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+    legendLeft: { flexDirection: 'row', alignItems: 'center' },
+    legendDot: { width: 12, height: 12, borderRadius: 4, marginRight: 10 },
+    legendName: { fontSize: 14, color: '#4B5563' },
+    legendPercent: { fontSize: 14, fontWeight: 'bold', color: '#1F2937' },
 });
